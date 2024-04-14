@@ -12,17 +12,18 @@ namespace Domain
   
     public class MaintenanceRequest
     {
-        [Key]
-        public Guid Id { get; set; }
+        
+        public int Id { get; set; }
         public Apartment Apartment { get; set; }
         public string Description { get; set; }
         public CategoryService CategoryService { get; set; }
 
-        // public MaintenanceRequest() { Id = Guid.NewGuid(); }
+         public MaintenanceRequest() { }
 
-        public MaintenanceRequest(Apartment apartment, string description, CategoryService categoryService)
+
+        public MaintenanceRequest(Apartment apartment, string description, CategoryService categoryService, int id)
         {
-            Id = Guid.NewGuid();
+            Id = id;
             Apartment = apartment;
             Description = description;
             CategoryService = categoryService;

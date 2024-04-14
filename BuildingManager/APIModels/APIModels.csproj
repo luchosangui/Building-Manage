@@ -11,4 +11,9 @@
     <Folder Include="OutputModels\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="8.0.4" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Binder" Version="8.0.1" />
+  </ItemGroup>
+
 </Project>

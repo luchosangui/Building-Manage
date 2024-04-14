@@ -20,6 +20,8 @@ namespace Domain
         public string Email { get; set; }
         public UserRole Role { get; set; }
 
+        public User() { }   
+
         public User(string name, string surname, string email, UserRole role)
         {
             Id = Guid.NewGuid();
