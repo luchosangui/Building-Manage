@@ -19,16 +19,18 @@ namespace Domain
         public string Surname { get; set; }
         public string Email { get; set; }
         public UserRole Role { get; set; }
+        public string Password { get; set; }
 
         public User() { }   
 
-        public User(string name, string surname, string email, UserRole role,int id)
+        public User(string name, string surname, string email, UserRole role,int id,string password)
         {
             Id = id;
             Name = name;
             Surname = surname;
             Email = email;
             Role = role;
+            Password = password;
         }
 
     }

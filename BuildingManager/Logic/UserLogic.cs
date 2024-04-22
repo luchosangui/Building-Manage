@@ -1,4 +1,6 @@
-﻿using Domain;
+﻿using APIModels.InputModels;
+using APIModels.OutputModels;
+using Domain;
 using IData;
 using ILogic;
 
@@ -15,9 +17,9 @@ namespace Logic
             _repository = repository;
         }
 
-        public void CreateUser(User users) { 
-        
-            _repository.Insert(users);
+        public UserResponse CreateUser(UserRequest userRequest)
+        {
+            return new UserResponse(_repository.Insert(userRequest.ToEntity()));
         }
 
     }

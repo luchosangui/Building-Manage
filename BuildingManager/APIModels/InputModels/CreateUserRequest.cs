@@ -9,7 +9,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace APIModels.InputModels
 {
-    public class UserRequest
+    public class CreateUserRequest
     {
         [Required(ErrorMessage = "The 'Name' field is required.")]
         [StringLength(100, ErrorMessage = "The 'Name' must be less than 100 characters.")]
@@ -26,14 +26,19 @@ namespace APIModels.InputModels
         [Required(ErrorMessage = "The 'Role' field is required.")]
         public UserRole Role { get; set; }
 
-       // public UserRequest() { }
 
-        public UserRequest(string name, string surname, string email, UserRole role)
+        [Required(ErrorMessage = "The 'password' field is required.")]
+        public string Password { get; set; }
+
+        // public UserRequest() { }
+
+        public CreateUserRequest(string name, string surname, string email, UserRole role, string password)
         {
             Name = name;
             Surname = surname;
             Email = email;
             Role = role;
+            Password = password;
         }
 
         public User ToEntity()
@@ -43,8 +48,18 @@ namespace APIModels.InputModels
                 Name = Name,
                 Surname = Surname,
                 Email = Email,
-                Role = Role
+                Role = Role,
+                Password = Password
             };
+        }
+        public UserRequest ToUserRequest() {
+            return new UserRequest(
+                Name = Name,
+                Surname = Surname,
+                Email = Email,
+                Role = Role
+                
+                );
         }
     }
 }

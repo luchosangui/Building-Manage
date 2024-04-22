@@ -19,6 +19,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Data\Data.csproj" />
+    <ProjectReference Include="..\ILogic\ILogic.csproj" />
   </ItemGroup>
 
 </Project>

@@ -1,9 +1,10 @@
-﻿using Domain;
+﻿using APIModels.InputModels;
+using APIModels.OutputModels;
 
 namespace ILogic
 {
     public interface IUserLogic
     {
-        public void CreateUser(User users);
+        public UserResponse CreateUser(UserRequest userRequest);
     }
 }
