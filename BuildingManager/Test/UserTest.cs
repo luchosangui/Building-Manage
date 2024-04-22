@@ -5,6 +5,8 @@ using Logic;
 using ILogic;
 using IData;
 using System.Threading.Tasks;
+using APIModels.InputModels;
+using APIModels.OutputModels;
 
 namespace Test
 {
@@ -14,28 +16,42 @@ namespace Test
         private Mock<IGenericRepository<User>> _mockRepository;
         private IUserLogic _userLogic;
 
-        [TestInitialize]
-        public void Setup()
-        {
-            _mockRepository = new Mock<IGenericRepository<User>>();
-            _userLogic = new UserLogic(_mockRepository.Object);
-        }
+        //[TestInitialize]
+        //public void Setup()
+        //{
+        //    _mockRepository = new Mock<IGenericRepository<User>>();
+        //    _userLogic = new UserLogic(_mockRepository.Object);
+        //}
 
         [TestMethod]
         public void ValidCreateUser()
         {
             // Arrange
-            var user = new User("Luis", "Sanguinetti", "test@test.com", UserRole.Administrator, 1);
-            //_mockRepository.Setup(repo => repo.Insert(It.IsAny<User>())).Verifiable();
+            var user = new User("Luis", 
+                                "Sanguinetti", 
+                                "test@test.com", 
+                                UserRole.Administrator, 
+                                1,
+                                "password"
+                                );
+            Mock<IGenericRepository<User>> mockRepo = new Mock<IGenericRepository<User>>();
+            mockRepo.Setup(repo => repo.Insert(It.IsAny<User>())).Returns(user);
+            IUserLogic logic = new UserLogic(mockRepo.Object);
 
-            _mockRepository.Verify(repo => repo.Insert(user), Times.Once);
-
+            var expected = new UserRequest(
+                "Luis",
+                "Sanguinetti",
+                "test@test.com",
+                UserRole.Administrator
+               
+                );
 
             // Act
-            _userLogic.CreateUser(user);
+            UserResponse result = logic.CreateUser(expected);
 
             // Assert
-            _mockRepository.Verify(repo => repo.Insert(user), Times.Once);
+            Assert.AreEqual(expected.Email, result.Email);
+            mockRepo.VerifyAll();
         }
     }
 }
