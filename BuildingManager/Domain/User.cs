@@ -14,7 +14,7 @@ namespace Domain
     {
 
         [Key]
-        public Guid Id { get; set; }
+        public int Id { get; set; }
         public string Name { get; set; }
         public string Surname { get; set; }
         public string Email { get; set; }
@@ -22,9 +22,9 @@ namespace Domain
 
         public User() { }   
 
-        public User(string name, string surname, string email, UserRole role)
+        public User(string name, string surname, string email, UserRole role,int id)
         {
-            Id = Guid.NewGuid();
+            Id = id;
             Name = name;
             Surname = surname;
             Email = email;
