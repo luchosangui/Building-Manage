@@ -51,6 +51,9 @@ namespace Test
 
             // Assert
             Assert.AreEqual(expected.Email, result.Email);
+            Assert.AreEqual(expected.Name, result.Name);
+            Assert.AreEqual(expected.Surname, result.Surname);
+            Assert.AreEqual(expected.Role, result.Role);
             mockRepo.VerifyAll();
         }
     }
