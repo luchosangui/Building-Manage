@@ -18,6 +18,8 @@ namespace Domain
         public string Description { get; set; }
         public CategoryService CategoryService { get; set; }
 
+        //estado
+
          public MaintenanceRequest() { }
 
 
