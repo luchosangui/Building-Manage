@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 using Domain;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel;
 
 namespace APIModels.InputModels
 {
@@ -34,6 +35,7 @@ namespace APIModels.InputModels
             Surname = surname;
             Email = email;
             Role = role;
+            
         }
 
         public User ToEntity()

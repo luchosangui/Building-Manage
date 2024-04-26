@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Data.Migrations
 {
     [DbContext(typeof(BuildingManagerContext))]
-    [Migration("20240414215521_InitionMigration")]
-    partial class InitionMigration
+    [Migration("20240426231811_InitialMigration")]
+    partial class InitialMigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -51,8 +51,8 @@ namespace Data.Migrations
                     b.Property<int>("NumberOfBedrooms")
                         .HasColumnType("int");
 
-                    b.Property<Guid>("OwnerId")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<int>("OwnerId")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
@@ -123,6 +123,28 @@ namespace Data.Migrations
                     b.ToTable("CategoryService");
                 });
 
+            modelBuilder.Entity("Domain.Invitation", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Invitation");
+                });
+
             modelBuilder.Entity("Domain.MaintenanceRequest", b =>
                 {
                     b.Property<int>("Id")
@@ -152,9 +174,11 @@ namespace Data.Migrations
 
             modelBuilder.Entity("Domain.User", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<int?>("BuildingId")
                         .HasColumnType("int");
@@ -164,6 +188,10 @@ namespace Data.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Password")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -205,6 +233,17 @@ namespace Data.Migrations
                         .IsRequired();
 
                     b.Navigation("BuildingCompany");
+                });
+
+            modelBuilder.Entity("Domain.Invitation", b =>
+                {
+                    b.HasOne("Domain.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Domain.MaintenanceRequest", b =>

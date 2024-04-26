@@ -1,12 +1,11 @@
-﻿using System;
-using Microsoft.EntityFrameworkCore.Migrations;
+﻿using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
 namespace Data.Migrations
 {
     /// <inheritdoc />
-    public partial class InitionMigration : Migration
+    public partial class InitialMigration : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -62,11 +61,13 @@ namespace Data.Migrations
                 name: "Users",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Surname = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Role = table.Column<int>(type: "int", nullable: false),
+                    Password = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     BuildingId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
@@ -87,7 +88,7 @@ namespace Data.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Floor = table.Column<int>(type: "int", nullable: false),
                     Number = table.Column<int>(type: "int", nullable: false),
-                    OwnerId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    OwnerId = table.Column<int>(type: "int", nullable: false),
                     NumberOfBedrooms = table.Column<int>(type: "int", nullable: false),
                     NumberOfBathrooms = table.Column<int>(type: "int", nullable: false),
                     HasTerrace = table.Column<bool>(type: "bit", nullable: false),
@@ -104,6 +105,26 @@ namespace Data.Migrations
                     table.ForeignKey(
                         name: "FK_Apartments_Users_OwnerId",
                         column: x => x.OwnerId,
+                        principalTable: "Users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Invitation",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    UserId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Invitation", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Invitation_Users_UserId",
+                        column: x => x.UserId,
                         principalTable: "Users",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -152,6 +173,11 @@ namespace Data.Migrations
                 column: "BuildingCompanyId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Invitation_UserId",
+                table: "Invitation",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_MaintenanceRequests_ApartmentId",
                 table: "MaintenanceRequests",
                 column: "ApartmentId");
@@ -170,6 +196,9 @@ namespace Data.Migrations
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropTable(
+                name: "Invitation");
+
             migrationBuilder.DropTable(
                 name: "MaintenanceRequests");
 

@@ -8,7 +8,7 @@ namespace Data
     public class BuildingManagerContext : DbContext
     {
         public BuildingManagerContext(DbContextOptions<BuildingManagerContext> options) : base(options) {
-            Console.WriteLine("SHOLD RUN MIGRATIONS");
+           // Console.WriteLine("SHOLD RUN MIGRATIONS");
             this.Database.Migrate();
         }
         //agregar relations tables
@@ -17,6 +17,8 @@ namespace Data
         public DbSet<Apartment>? Apartments { get; set; }
         public DbSet<BuildingCompany>? BuildingCompanies { get; set; }
         public DbSet<MaintenanceRequest>? MaintenanceRequests { get; set; }
+
+        public DbSet<Invitation>? Invitation { get; set; }
 
         
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

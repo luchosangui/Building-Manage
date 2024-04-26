@@ -17,7 +17,7 @@ namespace Logic
             _repository = repository;
         }
 
-        public UserResponse CreateUser(UserRequest userRequest)
+        public UserResponse CreateUser(CreateUserRequest userRequest)
         {
             return new UserResponse(_repository.Insert(userRequest.ToEntity()));
         }

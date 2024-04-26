@@ -19,7 +19,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "APIModels", "APIModels\APIM
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Exceptions", "Exceptions\Exceptions.csproj", "{7755ECAB-7596-4C9F-85CC-77A68ED4E882}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Test", "Test\Test.csproj", "{3BA5D9B0-AE06-46A7-BB39-918D3B7ABA51}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Test", "Test\Test.csproj", "{3BA5D9B0-AE06-46A7-BB39-918D3B7ABA51}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServicesFactory", "ServicesFactory\ServicesFactory.csproj", "{987ADCFC-E3E4-4327-BFAC-4DED0E483E58}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -63,6 +65,10 @@ Global
 		{3BA5D9B0-AE06-46A7-BB39-918D3B7ABA51}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3BA5D9B0-AE06-46A7-BB39-918D3B7ABA51}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3BA5D9B0-AE06-46A7-BB39-918D3B7ABA51}.Release|Any CPU.Build.0 = Release|Any CPU
+		{987ADCFC-E3E4-4327-BFAC-4DED0E483E58}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{987ADCFC-E3E4-4327-BFAC-4DED0E483E58}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{987ADCFC-E3E4-4327-BFAC-4DED0E483E58}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{987ADCFC-E3E4-4327-BFAC-4DED0E483E58}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

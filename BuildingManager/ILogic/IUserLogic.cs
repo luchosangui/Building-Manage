@@ -5,6 +5,6 @@ namespace ILogic
 {
     public interface IUserLogic
     {
-        public UserResponse CreateUser(UserRequest userRequest);
+        public UserResponse CreateUser(CreateUserRequest userRequest);
     }
 }

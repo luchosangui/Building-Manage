@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using Data;
+using ServicesFactory;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -16,6 +17,15 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+var servicesFactory = new ServicesFactory.ServicesFactory();
+servicesFactory.ConfigureServices(builder.Services);
+
+builder.Services.AddCors(options =>
+              options.AddPolicy("AllowAll", policy =>
+                  policy.AllowAnyOrigin()
+                      .AllowAnyHeader()
+                      .AllowAnyMethod())
+              );
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

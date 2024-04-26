@@ -120,6 +120,28 @@ namespace Data.Migrations
                     b.ToTable("CategoryService");
                 });
 
+            modelBuilder.Entity("Domain.Invitation", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Invitation");
+                });
+
             modelBuilder.Entity("Domain.MaintenanceRequest", b =>
                 {
                     b.Property<int>("Id")
@@ -208,6 +230,17 @@ namespace Data.Migrations
                         .IsRequired();
 
                     b.Navigation("BuildingCompany");
+                });
+
+            modelBuilder.Entity("Domain.Invitation", b =>
+                {
+                    b.HasOne("Domain.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Domain.MaintenanceRequest", b =>

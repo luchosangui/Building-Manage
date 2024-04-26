@@ -52,12 +52,13 @@ namespace APIModels.InputModels
                 Password = Password
             };
         }
-        public UserRequest ToUserRequest() {
-            return new UserRequest(
+        public CreateUserRequest ToUserRequest() {
+            return new CreateUserRequest(
                 Name = Name,
                 Surname = Surname,
                 Email = Email,
-                Role = Role
+                Role = Role,
+                Password = Password
                 
                 );
         }
