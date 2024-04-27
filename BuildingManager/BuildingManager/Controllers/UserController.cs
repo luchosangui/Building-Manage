@@ -24,5 +24,9 @@ namespace BuildingManager.Controllers
             var newUser = _userLogic.CreateUser(received.ToUserRequest());
             return CreatedAtAction(nameof(CreateUser), new { id = newUser.Id }, newUser);
         }
+
+     
+
+       
     }
 }

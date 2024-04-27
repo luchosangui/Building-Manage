@@ -18,7 +18,13 @@ namespace ServicesFactory
 
             serviceCollection.AddDbContext<DbContext, BuildingManagerContext>();
             serviceCollection.AddScoped<IGenericRepository<User>, UserManagement>();
+            serviceCollection.AddScoped<IGenericRepository<Invitation>, InvitationManagement>();
+          
+
             serviceCollection.AddScoped<IUserLogic, UserLogic>();
+            
+            serviceCollection.AddScoped<IInvitationLogic, InvitationLogic>();
+            
         }
 
     }
