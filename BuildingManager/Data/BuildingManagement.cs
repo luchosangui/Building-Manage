@@ -1,11 +1,13 @@
 ﻿using Domain;
 using Microsoft.EntityFrameworkCore;
+using System;
+
 
 namespace Data
 {
-    public class ApartmentManagement : GenericRepository<Apartment>
+    public class BuildingManagement : GenericRepository<Building>
     {
-        public ApartmentManagement(DbContext context)
+        public BuildingManagement(DbContext context)
         {
             Context = context;
         }
