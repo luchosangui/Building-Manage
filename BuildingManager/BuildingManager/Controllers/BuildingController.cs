@@ -1,6 +1,13 @@
-﻿namespace BuildingManager.Controllers
+﻿using Microsoft.AspNetCore.Mvc;
+using APIModels.InputModels;
+using ILogic;
+
+namespace BuildingManager.Controllers
 {
-    public class BuildingController
+    [Route("api/buildings")]
+    public class BuildingController: Controller
     {
     }
 }
+
+
