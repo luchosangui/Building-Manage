@@ -9,53 +9,42 @@ namespace APIModels.InputModels
 {
     public class BuildingRequest
     {
-  //      public BuildingRequest() { }
+        public int Id { get; set; }
+        public string Name { get; set; }
+        public string Direction { get; set; }
+        public BuildingCompany BuildingCompany { get; set; }
+        public List<Apartment> Apartments { get; set; }
+        public List<User> MaintenancePersons { get; set; }
 
-//        public BuildingRequest ToBuildingRequest() { return this; }
 
-        //public Building ToEntity() { return this; }
+        public BuildingRequest(int id, string name, string direction,BuildingCompany buildingCompnay) { 
+        
+            Id = id;
+            Name = name;
+            Direction = direction;
+            BuildingCompany = buildingCompnay;
+            Apartments = new List<Apartment>();
+            MaintenancePersons = new List<User>();
+        }
+
+        public BuildingRequest ToBuildingRequest() {
+            return new BuildingRequest(
+                Id,
+                Name,
+                Direction,
+                BuildingCompany
+
+
+                ); }
+
+        public Building ToEntity() {
+            return new Building(
+                Name,
+                Direction,
+                BuildingCompany,
+                Id
+                );
+        }
     }
 }
 
-
-/*public ApartmentRequest(int id, int floor, int number, User owner, int numberOfBedrooms, int numberOfBathrooms, bool hasTerrace) {
-
-            Id = id;
-            Floor = floor;
-            Number = number;
-            Owner = owner;
-            NumberOfBedrooms = numberOfBedrooms;
-            NumberOfBathrooms = numberOfBathrooms;
-            HasTerrace = hasTerrace;
-
-        }
-
-        public ApartmentRequest ToApartmentRequest(){
-
-            return new ApartmentRequest( 
-
-                Id,
-                Floor,
-                Number,
-                Owner,
-                NumberOfBedrooms,
-                NumberOfBathrooms,
-                HasTerrace
-
-
-            );
-        }
-
-        public Apartment ToEntity() {
-            return new Apartment(
-                Id,
-                Floor,
-                Owner,
-                Number,
-                NumberOfBedrooms,
-                HasTerrace,
-                NumberOfBathrooms
-
-
-
-                );*/

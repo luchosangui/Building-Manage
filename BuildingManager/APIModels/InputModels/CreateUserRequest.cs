@@ -30,7 +30,7 @@ namespace APIModels.InputModels
         [Required(ErrorMessage = "The 'password' field is required.")]
         public string Password { get; set; }
 
-        // public UserRequest() { }
+        
 
         public CreateUserRequest(string name, string surname, string email, UserRole role, string password)
         {
