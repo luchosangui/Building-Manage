@@ -12,19 +12,19 @@ namespace APIModels.InputModels
         public int Id { get; set; }
         public string Name { get; set; }
         public string Direction { get; set; }
-        public BuildingCompany BuildingCompany { get; set; }
-        public List<Apartment> Apartments { get; set; }
-        public List<User> MaintenancePersons { get; set; }
+        public int BuildingCompanyId { get; set; }
+        //public List<Apartment> Apartments { get; set; }
+        //public List<User> MaintenancePersons { get; set; }
 
 
-        public BuildingRequest(int id, string name, string direction,BuildingCompany buildingCompnay) { 
+        public BuildingRequest(int id, string name, string direction,int buildingCompanyId) { 
         
             Id = id;
             Name = name;
             Direction = direction;
-            BuildingCompany = buildingCompnay;
-            Apartments = new List<Apartment>();
-            MaintenancePersons = new List<User>();
+            BuildingCompanyId = buildingCompanyId;
+            //Apartments = new List<Apartment>();
+            //MaintenancePersons = new List<User>();
         }
 
         public BuildingRequest ToBuildingRequest() {
@@ -32,19 +32,19 @@ namespace APIModels.InputModels
                 Id,
                 Name,
                 Direction,
-                BuildingCompany
+                BuildingCompanyId
 
 
                 ); }
 
-        public Building ToEntity() {
-            return new Building(
-                Name,
-                Direction,
-                BuildingCompany,
-                Id
-                );
-        }
+        //public Building ToEntity() {
+        //    return new Building(
+        //        Name,
+        //        Direction,
+        //        BuildingCompany,
+        //        Id
+        //        );
+        //}
     }
 }
 
