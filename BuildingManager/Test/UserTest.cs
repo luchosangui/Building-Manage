@@ -38,13 +38,16 @@ namespace Test
             mockRepo.Setup(repo => repo.Insert(It.IsAny<User>())).Returns(user);
             IUserLogic logic = new UserLogic(mockRepo.Object);
 
-            var expected = new UserRequest(
+            var expected = new CreateUserRequest(
                 "Luis",
                 "Sanguinetti",
                 "test@test.com",
-                UserRole.Administrator
+                UserRole.Administrator,
+                "pass"
                
                 );
+
+          
 
             // Act
             UserResponse result = logic.CreateUser(expected);
