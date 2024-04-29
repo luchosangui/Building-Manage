@@ -10,9 +10,11 @@ namespace BuildingManager.Controllers
     {
 
         private readonly IApartmentLogic _apartmentLogic;
-        public ApartmentController(IApartmentLogic logic)
+        private readonly IUserLogic _userLogic;
+        public ApartmentController(IApartmentLogic logic,IUserLogic userLogic)
         {
             _apartmentLogic = logic;
+            _userLogic = userLogic;
 
         }
 
@@ -25,8 +27,17 @@ namespace BuildingManager.Controllers
                 return BadRequest(ModelState);
             }
 
-            var newInvitation = _apartmentLogic.CreateApartment(received.ToApartmentRequest());
-            return CreatedAtAction(nameof(CreateApartment), new { id = newInvitation.Id }, newInvitation);
+            try
+            {
+                var newApartment = _apartmentLogic.CreateApartment(received.ToApartmentRequest());
+                return CreatedAtAction(nameof(CreateApartment), new { id = newApartment.Id }, newApartment);
+            }
+            catch (KeyNotFoundException ex)
+            {
+                return BadRequest(new { error = ex.Message });
+            }
+
+           
         }
 
     }

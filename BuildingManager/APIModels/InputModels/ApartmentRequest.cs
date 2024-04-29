@@ -12,17 +12,17 @@ namespace APIModels.InputModels
         public int Id { get; set; }
         public int Floor { get; set; }
         public int Number { get; set; }
-        public User Owner { get; set; }
+        public int OwnerId { get; set; }
         public int NumberOfBedrooms { get; set; }
         public int NumberOfBathrooms { get; set; }
         public bool HasTerrace { get; set; }
 
-        public ApartmentRequest(int id, int floor, int number, User owner, int numberOfBedrooms, int numberOfBathrooms, bool hasTerrace) {
+        public ApartmentRequest(int id, int floor, int number, int ownerId, int numberOfBedrooms, int numberOfBathrooms, bool hasTerrace) {
 
             Id = id;
             Floor = floor;
             Number = number;
-            Owner = owner;
+            OwnerId = ownerId;
             NumberOfBedrooms = numberOfBedrooms;
             NumberOfBathrooms = numberOfBathrooms;
             HasTerrace = hasTerrace;
@@ -36,7 +36,7 @@ namespace APIModels.InputModels
                 Id,
                 Floor,
                 Number,
-                Owner,
+                OwnerId,
                 NumberOfBedrooms,
                 NumberOfBathrooms,
                 HasTerrace
@@ -45,20 +45,20 @@ namespace APIModels.InputModels
             );
         }
 
-        public Apartment ToEntity() {
-            return new Apartment(
-                Id,
-                Floor,
-                Owner,
-                Number,
-                NumberOfBedrooms,
-                HasTerrace,
-                NumberOfBathrooms
+        //public Apartment ToEntity() {
+        //    return new Apartment(
+        //        Id,
+        //        Floor,
+        //        Owner,
+        //        Number,
+        //        NumberOfBedrooms,
+        //        HasTerrace,
+        //        NumberOfBathrooms
 
 
 
-                );
-        }
+        //        );
+        //}
 
     }
 }
