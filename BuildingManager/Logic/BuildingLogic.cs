@@ -14,7 +14,7 @@ namespace Logic
             _repository = repository;
         }
 
-        public BuildingResponse CreateBuildingResponse(BuildingRequest buildingRequest) {
+        public BuildingResponse CreateBuilding(BuildingRequest buildingRequest) {
 
             var dataBuild = _repository.Insert(buildingRequest.ToEntity());
             return new BuildingResponse(dataBuild);

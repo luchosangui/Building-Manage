@@ -13,8 +13,7 @@ namespace Test
     [TestClass]
     public class UserTest
     {
-        private Mock<IGenericRepository<User>> _mockRepository;
-        private IUserLogic _userLogic;
+        
 
         //[TestInitialize]
         //public void Setup()
