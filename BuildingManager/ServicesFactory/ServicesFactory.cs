@@ -19,10 +19,14 @@ namespace ServicesFactory
             serviceCollection.AddDbContext<DbContext, BuildingManagerContext>();
             serviceCollection.AddScoped<IGenericRepository<User>, UserManagement>();
             serviceCollection.AddScoped<IGenericRepository<Invitation>, InvitationManagement>();
-          
+            serviceCollection.AddScoped<IGenericRepository<BuildingCompany>, BuildingCompanyManagement>();
+            serviceCollection.AddScoped<IGenericRepository<Apartment>, ApartmentManagement>();
 
             serviceCollection.AddScoped<IUserLogic, UserLogic>();
-            
+
+            serviceCollection.AddScoped<IBuildingCompanyLogic, BuildingCompanyLogic>();
+            serviceCollection.AddScoped<IApartmentLogic, ApartmentLogic>();
+
             serviceCollection.AddScoped<IInvitationLogic, InvitationLogic>();
             
         }
