@@ -1,11 +1,12 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
+﻿using System;
+using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
 namespace Data.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialMigration : Migration
+    public partial class initialMigration : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -34,6 +35,21 @@ namespace Data.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_CategoryService", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Invitation",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    FechaLimite = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    NameUser = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Invitation", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -111,26 +127,6 @@ namespace Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Invitation",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    UserId = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Invitation", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Invitation_Users_UserId",
-                        column: x => x.UserId,
-                        principalTable: "Users",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "MaintenanceRequests",
                 columns: table => new
                 {
@@ -138,7 +134,10 @@ namespace Data.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     ApartmentId = table.Column<int>(type: "int", nullable: false),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    CategoryServiceId = table.Column<int>(type: "int", nullable: false)
+                    CategoryServiceId = table.Column<int>(type: "int", nullable: false),
+                    State = table.Column<int>(type: "int", nullable: false),
+                    DateStart = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    DateEnd = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -171,11 +170,6 @@ namespace Data.Migrations
                 name: "IX_Buildings_BuildingCompanyId",
                 table: "Buildings",
                 column: "BuildingCompanyId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Invitation_UserId",
-                table: "Invitation",
-                column: "UserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_MaintenanceRequests_ApartmentId",

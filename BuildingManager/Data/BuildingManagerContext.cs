@@ -17,7 +17,7 @@ namespace Data
         public DbSet<Apartment>? Apartments { get; set; }
         public DbSet<BuildingCompany>? BuildingCompanies { get; set; }
         public DbSet<MaintenanceRequest>? MaintenanceRequests { get; set; }
-        public DbSet<CategoryService>? categoryServices { get; set; }
+        public DbSet<CategoryService>? CategoryService { get; set; }
 
         public DbSet<Invitation>? Invitation { get; set; }
 

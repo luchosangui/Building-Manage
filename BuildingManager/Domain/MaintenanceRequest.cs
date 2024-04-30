@@ -26,7 +26,7 @@ namespace Domain
         public string Description { get; set; }
         public CategoryService CategoryService { get; set; }
 
-        public StateMaintenance state { get; set; }
+        public StateMaintenance State { get; set; }
 
         public DateTime DateStart { get; set; }
         public DateTime DateEnd { get; set; }
@@ -40,7 +40,7 @@ namespace Domain
             Apartment = apartment;
             Description = description;
             CategoryService = categoryService;
-            this.state = state;
+            State = state;
             
         }
     }

@@ -11,14 +11,14 @@ namespace APIModels.OutputModels
     {
         public int Id { get; set; }
         public string Email { get; set; }
-        public User UserId { get; set; }
+      //  public User UserId { get; set; }
 
 
 
         public InvitationResponse(Invitation invitation) { 
             Id = invitation.Id;
             Email = invitation.Email;
-            UserId = invitation.User;
+           // UserId = invitation.User;
         }
 
     }

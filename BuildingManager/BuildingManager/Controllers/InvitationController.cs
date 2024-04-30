@@ -30,7 +30,7 @@ namespace BuildingManager.Controllers
         }
 
         [HttpPost("accept")]
-        public IActionResult AcceptInvitation([FromBody] AcceptInvitationRequest recieved) {
+        public IActionResult AcceptInvitation([FromBody] AcceptInvitationRequest received) {
 
             if (!ModelState.IsValid) { 
                 return BadRequest(ModelState);
@@ -38,7 +38,7 @@ namespace BuildingManager.Controllers
 
             try
             {
-                var newUser = _invitationLogic.AcceptInvitation(recieved);
+                var newUser = _invitationLogic.AcceptInvitation(received);
                 return CreatedAtAction(nameof(AcceptInvitation), new { id = newUser.Id }, newUser);
             }
             catch (KeyNotFoundException knfe)

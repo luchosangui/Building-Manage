@@ -15,7 +15,7 @@ namespace Domain
 
        public string NameUser {  get; set; }
 
-        public User User { get; set; }
+       // public User User { get; set; }
 
         public Invitation() { }
 
