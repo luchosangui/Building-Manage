@@ -11,19 +11,21 @@ namespace Domain
         public int Id { get; set; }
         public string Email { get; set; }
 
-        //public DateTime FechaLimite{ get; set; }
+        public DateTime FechaLimite{ get; set; }
 
-       // public int UserId { get; set; }
+       public string NameUser {  get; set; }
 
         public User User { get; set; }
 
         public Invitation() { }
 
-        public Invitation(int id, string email, User user) { 
+        public Invitation(int id, string email, User user,string nameUser, DateTime fechaLimite) { 
             
             Id = id;
             Email = email;
             User = user;
+            NameUser = nameUser;
+            FechaLimite = fechaLimite;
 
         
         }

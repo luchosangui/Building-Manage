@@ -21,5 +21,10 @@ namespace Logic
         {
             return new InvitationResponse(_repository.Insert(invitationRequest.ToEntity()));
         }
+
+        public UserResponse acceptInvitation(InvitationRequest invitationRequest) {
+        
+        }
+    
     }
 }
