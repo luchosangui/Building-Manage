@@ -11,10 +11,12 @@ namespace Logic
     {
 
         private readonly IGenericRepository<Invitation> _repository;
+        private readonly IGenericRepository<User> _repositoryUser;
 
-        public InvitationLogic(IGenericRepository<Invitation> repository)
+        public InvitationLogic(IGenericRepository<Invitation> repository, IGenericRepository<User> repositoryUser)
         {
             _repository = repository;
+            _repositoryUser = repositoryUser;
         }
         //corregir
         public InvitationResponse CreateInvitation(InvitationRequest invitationRequest)
@@ -22,8 +24,30 @@ namespace Logic
             return new InvitationResponse(_repository.Insert(invitationRequest.ToEntity()));
         }
 
-        public UserResponse acceptInvitation(InvitationRequest invitationRequest) {
-        
+        public UserResponse acceptInvitation(AcceptInvitationRequest acceptInvitationRequest ) {
+
+            Invitation invitation = _repository.Get(x=>x.Id==acceptInvitationRequest.InvitationId);
+
+           
+
+            if (invitation == null)
+            {
+                throw new KeyNotFoundException($"No invitation found with ID {acceptInvitationRequest.InvitationId}");
+            }
+
+            User user = new User()
+            {
+                Name = invitation.NameUser,
+                Email = invitation.Email,
+                Role = (UserRole)2,
+                Password = acceptInvitationRequest.userPassword
+                
+            };
+
+           
+            var dataUser = _repositoryUser.Insert(user);
+            return new UserResponse(dataUser);
+
         }
     
     }

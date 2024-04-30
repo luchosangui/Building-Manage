@@ -19,11 +19,10 @@ namespace Domain
 
         public Invitation() { }
 
-        public Invitation(int id, string email, User user,string nameUser, DateTime fechaLimite) { 
+        public Invitation(int id, string email,string nameUser, DateTime fechaLimite) { 
             
             Id = id;
             Email = email;
-            User = user;
             NameUser = nameUser;
             FechaLimite = fechaLimite;
 

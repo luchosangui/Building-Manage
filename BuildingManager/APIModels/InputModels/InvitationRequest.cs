@@ -12,14 +12,14 @@ namespace APIModels.InputModels
     {
         public int Id { get; set; }
         public string Email { get; set; }
-        public User UserId { get; set; }
+        public string UserName {  get; set; }
 
 
-        public InvitationRequest(int id, string email, User userid) { 
+        public InvitationRequest(int id, string email, string userName) { 
                 
             Id = id;
             Email = email;
-            UserId = userid;
+            UserName = userName;
         }
 
         public InvitationRequest ToInvitationRequest()
@@ -27,9 +27,9 @@ namespace APIModels.InputModels
             return new InvitationRequest(
                Id = Id,
                 Email = Email,
-                UserId = UserId
+                UserName = UserName
 
-                );
+                ) ;
         }
         public Invitation ToEntity() {
 
@@ -37,7 +37,7 @@ namespace APIModels.InputModels
             {
                 Id = Id,
                 Email = Email,
-                User = UserId
+                NameUser = UserName
             };
         }
     }
