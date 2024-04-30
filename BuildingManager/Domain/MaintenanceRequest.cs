@@ -26,20 +26,22 @@ namespace Domain
         public string Description { get; set; }
         public CategoryService CategoryService { get; set; }
 
-        //public StateMaintenance state { get; set; }
+        public StateMaintenance state { get; set; }
 
-        //public DateTime DateStart { get; set; }
-        //public DateTime DateEnd { get; set; }
+        public DateTime DateStart { get; set; }
+        public DateTime DateEnd { get; set; }
 
          public MaintenanceRequest() { }
 
 
-        public MaintenanceRequest(Apartment apartment, string description, CategoryService categoryService, int id)
+        public MaintenanceRequest(Apartment apartment, string description, CategoryService categoryService, int id, StateMaintenance state)
         {
             Id = id;
             Apartment = apartment;
             Description = description;
             CategoryService = categoryService;
+            this.state = state;
+            
         }
     }
 }
