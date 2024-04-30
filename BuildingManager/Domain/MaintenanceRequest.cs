@@ -9,7 +9,15 @@ using System.Threading.Tasks;
 namespace Domain
 {
 
-  
+    public enum StateMaintenance
+    {
+        abierto,
+        cerrado,
+        atendido
+        
+
+    }
+
     public class MaintenanceRequest
     {
         
@@ -17,6 +25,11 @@ namespace Domain
         public Apartment Apartment { get; set; }
         public string Description { get; set; }
         public CategoryService CategoryService { get; set; }
+
+        //public StateMaintenance state { get; set; }
+
+        //public DateTime DateStart { get; set; }
+        //public DateTime DateEnd { get; set; }
 
          public MaintenanceRequest() { }
 

@@ -40,11 +40,42 @@ namespace Logic
             return listUsers;
         }
 
-        //public UserResponse updateUser(int id, UserRequest updatedUser) {
+        public UserResponse updateUser(int id, UserRequest updatedUser)
+        {
+            //conseguir de la base de datos el usuario
 
-        //    User user = _repository.Get(x=>x.Id==id);
-        //    if (updatedUser.Email!=null&&) { }
-        //}
+            User user = _repository.Get(x => x.Id == id);
+
+            if (updatedUser.Name != null && !"".Equals(updatedUser.Name.Trim()))
+            {
+                user.Name = updatedUser.Name;
+            }
+
+            if (updatedUser.Surname != null && !"".Equals(updatedUser.Surname.Trim()))
+            {
+                user.Surname = updatedUser.Surname;
+            }
+
+
+            if (updatedUser.Email != null && !"".Equals(updatedUser.Email.Trim()))
+            {
+                user.Email = updatedUser.Email;
+            }
+
+           //user role no puede ser null solo podrian ser iguales pero si lo redefino y son iguales no passa nada
+                user.Role = updatedUser.Role;
+            
+
+            if (updatedUser.Password != null && !"".Equals(updatedUser.Password.Trim()))
+            {
+                user.Password = updatedUser.Password;
+            }
+
+            var dataUser = _repository.Update(user);
+            return new UserResponse(dataUser);
+
+
+        }
 
 
 
