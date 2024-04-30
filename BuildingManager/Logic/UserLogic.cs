@@ -40,7 +40,7 @@ namespace Logic
             return listUsers;
         }
 
-        public UserResponse updateUser(int id, UserRequest updatedUser)
+        public UserResponse UpdateUser(int id, UserRequest updatedUser)
         {
             //conseguir de la base de datos el usuario
 

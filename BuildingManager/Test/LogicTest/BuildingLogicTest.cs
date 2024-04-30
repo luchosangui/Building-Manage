@@ -90,19 +90,21 @@ namespace Test.LogicTest
             building.MaintenancePersons = maitenencePerson;
 
             Mock<IGenericRepository<Building>> mockRepo = new Mock<IGenericRepository<Building>>();
+            Mock<IGenericRepository<BuildingCompany>> mockRepoBuildingCompany = new Mock<IGenericRepository<BuildingCompany>>();
+            mockRepoBuildingCompany.Setup(repo => repo.Insert(It.IsAny<BuildingCompany>())).Returns(buildingCompany);
             mockRepo.Setup(repo => repo.Insert(It.IsAny<Building>())).Returns(building);
-            IBuildingLogic logic = new BuildingLogic(mockRepo.Object);
+
+            IBuildingLogic logic = new BuildingLogic(mockRepo.Object, mockRepoBuildingCompany.Object);
 
             var expected = new BuildingRequest(
                 9,
                 "Building1",
                 "Avenida prueba 1234",
-                buildingCompany
+                buildingCompany.Id
                 
 
                 );
-            expected.Apartments = apartments;
-            expected.MaintenancePersons = maitenencePerson;
+           
 
             //Act
             BuildingResponse result = logic.CreateBuilding(expected);
@@ -111,7 +113,7 @@ namespace Test.LogicTest
             Assert.AreEqual(expected.Id, result.Id);
             Assert.AreEqual(expected.Name, result.Name);
             Assert.AreEqual(expected.Direction, result.Direction);
-            Assert.AreEqual(expected.BuildingCompany, result.BuildingCompany);
+            Assert.AreEqual(expected.BuildingCompanyId, result.BuildingCompany.Id);
     
 
             mockRepo.VerifyAll();

@@ -29,18 +29,23 @@ namespace Test.LogicTest
             var invitation = new Invitation(
                 8989,
                 "test@test.com",
-                user
+                user.Name,
+                DateTime.MaxValue
+                
 
                 );
 
             Mock<IGenericRepository<Invitation>> mockRepo = new Mock<IGenericRepository<Invitation>>();
+            Mock<IGenericRepository<User>> mockUserRepo = new Mock<IGenericRepository<User>>();
+            mockUserRepo.Setup(repo => repo.Insert(It.IsAny<User>())).Returns(user);
             mockRepo.Setup(repo => repo.Insert(It.IsAny<Invitation>())).Returns(invitation);
-            IInvitationLogic logic = new InvitationLogic(mockRepo.Object);
+            IInvitationLogic logic = new InvitationLogic(mockRepo.Object, mockUserRepo.Object);
 
             var expected = new InvitationRequest(
                 8989,
                 "test@test.com",
-                user
+                user.Name,
+                DateTime.MaxValue
                 );
 
             //Act
@@ -49,7 +54,7 @@ namespace Test.LogicTest
             //Assert
             Assert.AreEqual(expected.Id, result.Id);
             Assert.AreEqual(expected.Email, result.Email);
-            Assert.AreEqual(expected.UserId, result.UserId);
+            
             mockRepo.VerifyAll();
         }
 

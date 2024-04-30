@@ -50,6 +50,15 @@ namespace Logic
             return new UserResponse(dataUser);
 
         }
-    
+
+       
+
+            public void DeleteInvitation(int id)
+
+                {
+                    Invitation invitation = _repository.Get(x => x.Id == id);
+                    _repository.Delete(invitation);
+                }
+
     }
 }
