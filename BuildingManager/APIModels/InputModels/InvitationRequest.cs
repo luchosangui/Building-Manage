@@ -14,12 +14,15 @@ namespace APIModels.InputModels
         public string Email { get; set; }
         public string UserName {  get; set; }
 
+        public DateTime FechaLimite { get; set; }
 
-        public InvitationRequest(int id, string email, string userName) { 
+
+        public InvitationRequest(int id, string email, string userName, DateTime fechaLimite) { 
                 
             Id = id;
             Email = email;
             UserName = userName;
+            FechaLimite = fechaLimite;
         }
 
         public InvitationRequest ToInvitationRequest()
@@ -27,7 +30,8 @@ namespace APIModels.InputModels
             return new InvitationRequest(
                Id = Id,
                 Email = Email,
-                UserName = UserName
+                UserName = UserName,
+                FechaLimite = FechaLimite
 
                 ) ;
         }
@@ -37,7 +41,8 @@ namespace APIModels.InputModels
             {
                 Id = Id,
                 Email = Email,
-                NameUser = UserName
+                NameUser = UserName,
+                FechaLimite = FechaLimite
             };
         }
     }

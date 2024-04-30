@@ -13,10 +13,13 @@ namespace APIModels.InputModels
         public int InvitationId { get; set; }
         public string userPassword { get; set; }
 
-        public AcceptInvitationRequest(int invitationId, string userPassword)
+        public string Surname { get; set; }
+
+        public AcceptInvitationRequest(int invitationId, string userPassword, string surname)
         {
             InvitationId = invitationId;
             this.userPassword = userPassword;
+            Surname = surname;
         }
 
 

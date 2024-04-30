@@ -40,7 +40,8 @@ namespace Logic
                 Name = invitation.NameUser,
                 Email = invitation.Email,
                 Role = (UserRole)2,
-                Password = acceptInvitationRequest.userPassword
+                Password = acceptInvitationRequest.userPassword,
+                Surname = acceptInvitationRequest.Surname
                 
             };
 
