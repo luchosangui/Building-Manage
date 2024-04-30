@@ -11,6 +11,6 @@ namespace ILogic
     public interface ICategoryServiceLogic
     {
 
-        public CategoryServiceResponse CreateCategoryservice(CategoryServiceRequest categoryServiceRequest);
+        public CategoryServiceResponse CreateCategoryService(CategoryServiceRequest categoryServiceRequest);
     }
 }

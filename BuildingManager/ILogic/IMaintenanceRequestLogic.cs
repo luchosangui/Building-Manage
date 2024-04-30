@@ -1,4 +1,6 @@
-﻿using System;
+﻿using APIModels.InputModels;
+using APIModels.OutputModels;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,5 +10,6 @@ namespace ILogic
 {
     public interface IMaintenanceRequestLogic
     {
+        public MaintenenceRequestResponse CreateMaintenenceRequest(MaintenanceRequestRequest maintenanceRequestRequest);
     }
 }

@@ -16,7 +16,7 @@ namespace Logic
             _repository = repository;
         }
 
-        public MaintenenceRequestResponse CreateMaintenenceRequestResponse(MaintenanceRequestRequest maintenanceRequestRequest)
+        public MaintenenceRequestResponse CreateMaintenenceRequest(MaintenanceRequestRequest maintenanceRequestRequest)
         {
 
             var dataMaintReq = _repository.Insert(maintenanceRequestRequest.ToEntity());

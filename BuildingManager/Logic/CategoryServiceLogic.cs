@@ -16,7 +16,7 @@ namespace Logic
         
         
 
-        public CategoryServiceResponse CreateCategoryservice(CategoryServiceRequest categoryServiceRequest) {
+        public CategoryServiceResponse CreateCategoryService(CategoryServiceRequest categoryServiceRequest) {
 
             var dataCatServ = _repository.Insert(categoryServiceRequest.ToEntity());
             return new CategoryServiceResponse(dataCatServ);
