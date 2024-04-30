@@ -28,6 +28,29 @@ namespace BuildingManager.Controllers
             var newInvitation = _invitationLogic.CreateInvitation(received.ToInvitationRequest());
             return CreatedAtAction(nameof(CreateInvitation), new { id = newInvitation.Id }, newInvitation);
         }
+
+        [HttpPost("accept")]
+        public IActionResult AcceptInvitation([FromBody] AcceptInvitationRequest recieved) {
+
+            if (!ModelState.IsValid) { 
+                return BadRequest(ModelState);
+            }
+
+            try
+            {
+                var newUser = _invitationLogic.AcceptInvitation(recieved);
+                return CreatedAtAction(nameof(AcceptInvitation), new { id = newUser.Id }, newUser);
+            }
+            catch (KeyNotFoundException knfe)
+            {
+                return NotFound(knfe.Message);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);  
+            }
+
+        }
     }
 }
 

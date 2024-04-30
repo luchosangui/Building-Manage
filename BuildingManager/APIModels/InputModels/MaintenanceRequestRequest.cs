@@ -42,7 +42,8 @@ namespace APIModels.InputModels
                 Apartment,
                 Description,
                 CategoryService,
-                Id
+                Id,
+                (StateMaintenance)1
                 );
 
 
