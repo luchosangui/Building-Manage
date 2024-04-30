@@ -11,7 +11,10 @@ namespace Domain
         public Guid AuthToken { get; set; }
         public User User { get; set; }
 
-        public Session() { }
+        public Session() { 
+        
+        AuthToken = Guid.NewGuid();
+        }
 
         
     }
