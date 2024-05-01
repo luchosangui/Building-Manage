@@ -16,7 +16,7 @@ namespace APIModels.OutputModels
 
         public CategoryServiceResponse(CategoryService categoryService)
         {
-            int Id = categoryService.Id;
+            Id = categoryService.Id;
             Name = categoryService.Name;
         }
     }

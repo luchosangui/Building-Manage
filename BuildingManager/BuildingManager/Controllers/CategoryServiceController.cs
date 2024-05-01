@@ -25,7 +25,7 @@ namespace BuildingManager.Controllers
                 return BadRequest(ModelState);
             }
 
-            var newCategoryService = _categoryServiceLogic.CreateCategoryService(received.ToCategoryServiceRequest());
+            var newCategoryService = _categoryServiceLogic.CreateCategoryService(received);
             return CreatedAtAction(nameof(CreateCategoryService), new { id = newCategoryService.Id }, newCategoryService);
         }
 
