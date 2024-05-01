@@ -28,10 +28,21 @@ namespace Logic
             return new UserResponse(user);
         }
 
-        public void DeleteUser(int id) { 
-            User user =_repository.Get(x => x.Id == id);
-            _repository.Delete(user);
+        public void DeleteUser(int id)
+        {
+            User user = _repository.Get(x => x.Id == id);
+            if (user != null)
+            {
+                _repository.Delete(user);
+            }
+            else
+            {
+                throw new ArgumentException("No User Found with ID" + id);
+            }
+
         }
+
+
 
         //revisar
         public IEnumerable<UserResponse> GetAllUsers() { 

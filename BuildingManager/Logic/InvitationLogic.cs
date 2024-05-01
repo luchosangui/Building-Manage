@@ -51,9 +51,14 @@ namespace Logic
 
         }
 
-       
+        public InvitationResponse GetInvitationById(int id)
+        {
+            Invitation invitation = _repository.Get(x => x.Id == id);
+            return new InvitationResponse(invitation);
+        }
 
-            public void DeleteInvitation(int id)
+
+        public void DeleteInvitation(int id)
 
                 {
                     Invitation invitation = _repository.Get(x => x.Id == id);

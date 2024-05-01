@@ -58,6 +58,43 @@ namespace Test.LogicTest
             mockRepo.VerifyAll();
         }
 
+        [TestMethod]
+        public void ValidDeleteInvitation()
+        {
+            var user = new User("Luis",
+                               "Sanguinetti",
+                               "test1@test.com",
+                               UserRole.Administrator,
+                               1,
+                               "password"
+                               );
+
+            var invitation = new Invitation(
+                8989,
+                "test@test.com",
+                "testName",
+                DateTime.MaxValue
+            );
+
+            Mock<IGenericRepository<Invitation>> mockRepo = new Mock<IGenericRepository<Invitation>>();
+            Mock<IGenericRepository<Domain.User>> mockRepoUser = new Mock<IGenericRepository<Domain.User>>();
+
+           
+            mockRepo.Setup(repo => repo.Get(p => p.Id == invitation.Id, null)).Returns(invitation);
+            mockRepo.Setup(repo => repo.Delete(invitation));
+
+            IInvitationLogic logic = new InvitationLogic(mockRepo.Object, mockRepoUser.Object);
+
+            // Act
+            
+            var fetchedInvitation = logic.GetInvitationById(invitation.Id); 
+            logic.DeleteInvitation(invitation.Id);
+
+            // Assert
+            mockRepo.VerifyAll();
+        }
+
+
     }
 }
 
