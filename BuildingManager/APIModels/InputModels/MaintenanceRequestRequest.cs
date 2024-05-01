@@ -14,15 +14,21 @@ namespace APIModels.InputModels
         public string Description { get; set; }
         public CategoryService CategoryService { get; set; }
 
+        public StateMaintenance StateMaintenance { get; set; }
+
+        //public DateTime DateStart { get; set; }
+        //public DateTime DateEnd { get; set; }
+
        
 
 
-        public MaintenanceRequestRequest(Apartment apartment, string description, CategoryService categoryService, int id)
+        public MaintenanceRequestRequest(Apartment apartment, string description, CategoryService categoryService, int id, StateMaintenance stateMaintenance)
         {
             Id = id;
             Apartment = apartment;
             Description = description;
             CategoryService = categoryService;
+            StateMaintenance = stateMaintenance;
         }
 
         public MaintenanceRequestRequest ToMaintenanceRequestRequest() {
@@ -32,7 +38,8 @@ namespace APIModels.InputModels
                 Apartment,
                 Description,
                 CategoryService,
-                Id
+                Id,
+                StateMaintenance
                 );
         }
 
