@@ -1,6 +1,7 @@
 ﻿using Domain;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Data;
 using System.Linq;
 using System.Text;
@@ -11,6 +12,8 @@ namespace APIModels.InputModels
     public class InvitationRequest
     {
         public int Id { get; set; }
+
+        [EmailAddress(ErrorMessage = "The 'Email' field is not a valid email address.")]
         public string Email { get; set; }
         public string UserName {  get; set; }
 
