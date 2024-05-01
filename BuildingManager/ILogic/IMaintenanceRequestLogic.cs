@@ -11,5 +11,9 @@ namespace ILogic
     public interface IMaintenanceRequestLogic
     {
         public MaintenenceRequestResponse CreateMaintenenceRequest(MaintenanceRequestRequest maintenanceRequestRequest);
+        public MaintenenceRequestResponse GetMaintenanceRequestById(int id);
+        public void DeleteMaintenenceRequest(int id);
+        public IEnumerable<MaintenenceRequestResponse> GetAllUMaintenanceRequest();
+        public MaintenenceRequestResponse UpdateMaintenanceRequest(int id, MaintenanceRequestRequest updatedMaintenanceRequest);
     }
 }

@@ -47,7 +47,7 @@ namespace Logic
 
 
         //revisar
-        public IEnumerable<MaintenenceRequestResponse> GetAllUsers()
+        public IEnumerable<MaintenenceRequestResponse> GetAllUMaintenanceRequest()
         {
             var maintenanceRequest = _repository.GetAll<MaintenanceRequest>();
             var listMaintenanceRequest = maintenanceRequest.Select(maintenanceRequest => new MaintenenceRequestResponse(maintenanceRequest));
