@@ -2,11 +2,12 @@
 using APIModels.InputModels;
 using ILogic;
 using Logic;
+using Microsoft.Identity.Client;
 
 namespace BuildingManager.Controllers
 {
     [Route("api/invitations")]
-    public class InvitationController: Controller
+    public class InvitationController : Controller
     {
 
         private readonly IInvitationLogic _invitationLogic;
@@ -32,7 +33,7 @@ namespace BuildingManager.Controllers
         [HttpPost("accept")]
         public IActionResult AcceptInvitation([FromBody] AcceptInvitationRequest received) {
 
-            if (!ModelState.IsValid) { 
+            if (!ModelState.IsValid) {
                 return BadRequest(ModelState);
             }
 
@@ -47,10 +48,41 @@ namespace BuildingManager.Controllers
             }
             catch (Exception ex)
             {
-                return StatusCode(500, ex.Message);  
+                return StatusCode(500, ex.Message);
             }
 
         }
+
+        [HttpGet("{id}")]
+        public IActionResult GetInvitation([FromRoute] int id)
+        {
+
+            try
+            {
+                var result = _invitationLogic.GetInvitationById(id);
+                return Ok(result);
+            }
+            catch (KeyNotFoundException knfe)
+            {
+                return NotFound(knfe.Message);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
+            
+            
+
+        }
+
+        [HttpDelete("{id}")]
+        public IActionResult DeleteInvitation([FromRoute]int id) {
+
+            _invitationLogic.DeleteInvitation(id);
+            return Ok();
+
+        }
+
     }
 }
 

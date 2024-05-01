@@ -30,6 +30,64 @@ namespace Logic
             return new BuildingResponse(dataBuild);
         }
 
+        public BuildingResponse GetBuildingById(int id)
+        {
+            Building building = _repository.Get(x => x.Id == id);
+
+            if (building == null)
+            {
+                throw new KeyNotFoundException($"No building found with ID {id}");
+            }
+
+            return new BuildingResponse(building);
+        }
+
+        public void DeleteBuildign(int id)
+        {
+            Building building = _repository.Get(x => x.Id == id);
+            if (building != null)
+            {
+                _repository.Delete(building);
+            }
+            else
+            {
+                throw new ArgumentException("No Building Found with ID" + id);
+            }
+
+        }
+
+        public BuildingResponse UpdateBuilding(int id,BuildingRequest updatedBuilding)
+        {
+            //conseguir de la base de datos el usuario
+
+            Building building = _repository.Get(x => x.Id == id);
+
+            if (updatedBuilding.Name != null && !"".Equals(updatedBuilding.Name.Trim()))
+            {
+                building.Name = updatedBuilding.Name;
+            }
+
+            if (updatedBuilding.Direction != null && !"".Equals(updatedBuilding.Direction.Trim()))
+            {
+                building.Direction = updatedBuilding.Direction;
+            }
+
+            if (updatedBuilding.BuildingCompanyId != null )
+            {
+                building.BuildingCompany = _buildingCompanyRepository.Get(x => x.Id == updatedBuilding.BuildingCompanyId);
+            }
+
+
+
+
+            var dataBuilding = _repository.Update(building);
+            return new BuildingResponse(dataBuilding);
+
+
+        }
+
+
+
 
     }
 }

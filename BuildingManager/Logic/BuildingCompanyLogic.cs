@@ -21,6 +21,18 @@ namespace Logic
             return new BuildingCompanyResponse(dataBuildComp);
         }
 
+
+        public BuildingCompanyResponse GetBuildingById(int id)
+        {
+            BuildingCompany buildingCompany = _repository.Get(x => x.Id == id);
+
+            if (buildingCompany == null)
+            {
+                throw new KeyNotFoundException($"No buildingCompany found with ID {id}");
+            }
+
+            return new BuildingCompanyResponse(buildingCompany);
+        }
     }
 }
 

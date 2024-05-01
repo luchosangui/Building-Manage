@@ -6,7 +6,7 @@ using Logic;
 namespace BuildingManager.Controllers
 {
     [Route("api/buildings")]
-    public class BuildingController: Controller
+    public class BuildingController : Controller
     {
 
         private readonly IBuildingLogic _buildingLogic;
@@ -39,6 +39,46 @@ namespace BuildingManager.Controllers
 
 
         }
+
+        [HttpGet("{id}")]
+        public IActionResult GetBuilding([FromRoute] int id)
+        {
+
+            try
+            {
+                var result = _buildingLogic.GetBuildingById(id);
+                return Ok(result);
+            }
+            catch (KeyNotFoundException knfe)
+            {
+                return NotFound(knfe.Message);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
+
+
+
+        }
+
+        [HttpDelete("{id}")]
+        public IActionResult DeleteBuilding([FromRoute] int id)
+        {
+
+            _buildingLogic.DeleteBuilding(id);
+            return Ok();
+        }
+
+        [HttpPut("{id}")]
+        public IActionResult UpdateBuilding([FromRoute] int id, [FromBody] BuildingRequest buildingRequest)
+        {
+
+            var result = _buildingLogic.UpdateBuilding(id,buildingRequest);
+            return Ok(result);
+        }
+
+
 
     }
 }

@@ -54,6 +54,12 @@ namespace Logic
         public InvitationResponse GetInvitationById(int id)
         {
             Invitation invitation = _repository.Get(x => x.Id == id);
+
+            if (invitation == null)
+            {
+                throw new KeyNotFoundException($"No invitation found with ID {id}");
+            }
+
             return new InvitationResponse(invitation);
         }
 

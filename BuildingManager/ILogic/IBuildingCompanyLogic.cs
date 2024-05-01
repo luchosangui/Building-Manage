@@ -11,5 +11,7 @@ namespace ILogic
     public interface IBuildingCompanyLogic
     {
         public BuildingCompanyResponse CreateBuildingCompany(BuildingCompanyRequest buildingCompanyRequest);
+
+        public BuildingCompanyResponse GetBuildingById(int id);
     }
 }
