@@ -24,8 +24,8 @@ namespace APIModels.OutputModels
             Name = building.Name;
             Direction = building.Direction;
             BuildingCompany = building.BuildingCompany;
-            Apartments = new List<Apartment>(building.Apartments);
-            MaintenancePersons = new List<User>(building.MaintenancePersons);
+            Apartments = building.Apartments;
+            MaintenancePersons = building.MaintenancePersons;
         }
     }
 }

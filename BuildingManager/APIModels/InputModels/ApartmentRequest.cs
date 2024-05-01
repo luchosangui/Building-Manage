@@ -17,6 +17,8 @@ namespace APIModels.InputModels
         public int NumberOfBathrooms { get; set; }
         public bool HasTerrace { get; set; }
 
+      //  public int BuildingId { get; set; }
+
         public ApartmentRequest(int id, int floor, int number, int ownerId, int numberOfBedrooms, int numberOfBathrooms, bool hasTerrace) {
 
             Id = id;

@@ -42,7 +42,7 @@ namespace Logic
             return new BuildingResponse(building);
         }
 
-        public void DeleteBuildign(int id)
+        public void DeleteBuilding(int id)
         {
             Building building = _repository.Get(x => x.Id == id);
             if (building != null)
