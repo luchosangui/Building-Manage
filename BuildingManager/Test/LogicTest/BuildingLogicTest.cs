@@ -10,6 +10,7 @@ using APIModels.OutputModels;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 using System.Drawing;
 using Microsoft.EntityFrameworkCore.Metadata;
+using System.Linq.Expressions;
 
 namespace Test.LogicTest
 {
@@ -17,108 +18,97 @@ namespace Test.LogicTest
     public class BuildingLogicTest
     {
 
+        private Mock<IGenericRepository<Building>> _mockBuildingRepo;
+        private Mock<IGenericRepository<BuildingCompany>> _mockBuildingCompanyRepo;
+        private BuildingLogic _buildingLogic;
+
+        [TestInitialize]
+        public void Initialize()
+        {
+            _mockBuildingRepo = new Mock<IGenericRepository<Building>>();
+            _mockBuildingCompanyRepo = new Mock<IGenericRepository<BuildingCompany>>();
+            _buildingLogic = new BuildingLogic(_mockBuildingRepo.Object, _mockBuildingCompanyRepo.Object);
+        }
+
         [TestMethod]
         public void ValidCreateBuilding()
         {
+            var buildingRequest = new BuildingRequest(0, "Test Building", "123 Test St", 1);
+            var buildingCompany = new BuildingCompany { Id = 1, Name = "Test Company" };
+            var building = new Building(buildingRequest.Name, buildingRequest.Direction, buildingCompany, 0);
 
-            //Arrange
-            var user = new User("Luis",
-                               "Sanguinetti",
-                               "test@test.com",
-                               UserRole.Administrator,
-                               1,
-                               "password"
-                               );
+            _mockBuildingCompanyRepo.Setup(repo => repo.Get(It.IsAny<Expression<Func<BuildingCompany, bool>>>(), null))
+                               .Returns((Expression<Func<BuildingCompany, bool>> predicate, List<string> includes) => predicate.Compile()(buildingCompany) ? buildingCompany : null);
 
-            var user2 = new User("Luis",
-                              "Sanguinetti",
-                              "test@test.com",
-                              UserRole.Administrator,
-                              1,
-                              "password"
-                              );
-            var owner = new User("Luis",
-                               "Sanguinetti",
-                               "test1@test.com",
-                               UserRole.Administrator,
-                               1,
-                               "password"
-                               );
+            _mockBuildingRepo.Setup(repo => repo.Insert(It.IsAny<Building>())).Returns(building);
 
-            var apartment = new Apartment(
-                9,
-                329,
-                owner,
-                9,
-                12,
-                true,
-                78432
-                );
-            
+            var result = _buildingLogic.CreateBuilding(buildingRequest);
 
-            var apartment1 = new Apartment(
-                9,
-                329,
-                owner,
-                9,
-                12,
-                true,
-                78432
-                );
-            var maitenencePerson = new List<User> { user,user2 };
-            var apartments = new List<Apartment> { apartment, apartment1};
-
-
-            var buildingCompany = new BuildingCompany(
-                                "LuisCompany",
-                                26
-
-                               );
-
-            var building = new Building(
-                
-                "Building1",
-                "Avenida prueba 1234",
-                buildingCompany,
-                9
-
-
-
-
-                );
-            building.Apartments = apartments;
-            building.MaintenancePersons = maitenencePerson;
-
-            Mock<IGenericRepository<Building>> mockRepo = new Mock<IGenericRepository<Building>>();
-            Mock<IGenericRepository<BuildingCompany>> mockRepoBuildingCompany = new Mock<IGenericRepository<BuildingCompany>>();
-            mockRepoBuildingCompany.Setup(repo => repo.Insert(It.IsAny<BuildingCompany>())).Returns(buildingCompany);
-            mockRepo.Setup(repo => repo.Insert(It.IsAny<Building>())).Returns(building);
-
-            IBuildingLogic logic = new BuildingLogic(mockRepo.Object, mockRepoBuildingCompany.Object);
-
-            var expected = new BuildingRequest(
-                9,
-                "Building1",
-                "Avenida prueba 1234",
-                buildingCompany.Id
-                
-
-                );
-           
-
-            //Act
-            BuildingResponse result = logic.CreateBuilding(expected);
-
-            //Assert
-            Assert.AreEqual(expected.Id, result.Id);
-            Assert.AreEqual(expected.Name, result.Name);
-            Assert.AreEqual(expected.Direction, result.Direction);
-            Assert.AreEqual(expected.BuildingCompanyId, result.BuildingCompany.Id);
-    
-
-            mockRepo.VerifyAll();
-
+            Assert.IsNotNull(result);
+            Assert.AreEqual("Test Building", result.Name);
+            Assert.AreEqual(building.BuildingCompany,buildingCompany);
         }
+
+        [TestMethod]
+        public void ValidGetBuildingById()
+        {
+            var building = new Building("Test Building", "123 Test St", new BuildingCompany { Id = 1, Name = "Test Company" }, 1);
+            _mockBuildingRepo.Setup(repo => repo.Get(It.IsAny<Expression<Func<Building, bool>>>(), null))
+                             .Returns(building);
+
+            var result = _buildingLogic.GetBuildingById(1);
+
+            Assert.IsNotNull(result);
+            Assert.AreEqual("Test Building", result.Name);
+        }
+
+
+        [TestMethod]
+        public void InvalidGetBuildingById()
+        {
+            _mockBuildingRepo.Setup(repo => repo.Get(It.IsAny<Expression<Func<Building, bool>>>(), null))
+                             .Returns((Building)null);
+
+            Assert.ThrowsException<KeyNotFoundException>(() => _buildingLogic.GetBuildingById(999));
+        }
+
+        [TestMethod]
+        public void ValidDeleteBuilding()
+        {
+            var building = new Building { Id = 1 };
+            _mockBuildingRepo.Setup(repo => repo.Get(It.IsAny<Expression<Func<Building, bool>>>(), null))
+                             .Returns(building);
+
+            _buildingLogic.DeleteBuilding(1);
+
+            _mockBuildingRepo.Verify(repo => repo.Delete(building), Times.Once);
+        }
+
+        [TestMethod]
+        public void InvalidDeleteBuilding()
+        {
+            _mockBuildingRepo.Setup(repo => repo.Get(It.IsAny<Expression<Func<Building, bool>>>(), null))
+                             .Returns((Building)null);
+
+            Assert.ThrowsException<ArgumentException>(() => _buildingLogic.DeleteBuilding(999));
+        }
+
+        [TestMethod]
+        public void ValidUpdateBuilding()
+        {
+            var building = new Building { Id = 1, Name = "Old Name", Direction = "Old Direction", BuildingCompany = new BuildingCompany { Id = 1, Name = "Company" } };
+            var buildingRequest = new BuildingRequest(1, "Updated Name", "Updated Direction", 1);
+
+            _mockBuildingRepo.Setup(repo => repo.Get(It.IsAny<Expression<Func<Building, bool>>>(), null))
+                             .Returns(building);
+            _mockBuildingRepo.Setup(repo => repo.Update(It.IsAny<Building>())).Returns((Building args) => args);
+
+            var result = _buildingLogic.UpdateBuilding(1, buildingRequest);
+
+            Assert.AreEqual("Updated Name", result.Name);
+            Assert.AreEqual("Updated Direction", result.Direction);
+        }
+
 
     }
 }

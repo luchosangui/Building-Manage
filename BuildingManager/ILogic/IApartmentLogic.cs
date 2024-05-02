@@ -11,5 +11,10 @@ namespace ILogic
     public interface IApartmentLogic
     {
         public ApartmentResponse CreateApartment(ApartmentRequest apartmentRequest);
+        public ApartmentResponse GetApartmentgById(int id);
+        public void DeleteApartment(int id);
+
+
+
     }
 }

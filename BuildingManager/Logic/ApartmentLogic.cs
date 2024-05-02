@@ -35,6 +35,32 @@ namespace Logic
             return new ApartmentResponse(dataApt);
         }
 
+        public ApartmentResponse GetApartmentgById(int id)
+        {
+            Apartment apartment = _repository.Get(x => x.Id == id);
+
+            if (apartment == null)
+            {
+                throw new KeyNotFoundException($"No Apartment found with ID {id}");
+            }
+
+            return new ApartmentResponse(apartment);
+        }
+
+        public void DeleteApartment(int id)
+        {
+            Apartment apartment = _repository.Get(x => x.Id == id);
+            if (apartment != null)
+            {
+                _repository.Delete(apartment);
+            }
+            else
+            {
+                throw new ArgumentException("No Apartment Found with ID" + id);
+            }
+
+        }
+
     }
 }
 

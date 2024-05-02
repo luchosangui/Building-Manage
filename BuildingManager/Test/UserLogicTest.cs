@@ -16,8 +16,17 @@ namespace Test
     public class UserTest
     {
 
+        private Mock<IGenericRepository<Domain.User>> _mockUserRepo;
+        private UserLogic _userLogic;
 
-      
+        [TestInitialize]
+        public void Initialize()
+        {
+            _mockUserRepo = new Mock<IGenericRepository<Domain.User>>();
+            _userLogic = new UserLogic(_mockUserRepo.Object);
+        }
+
+
         [TestMethod]
         public void ValidCreateUser()
         {
@@ -56,106 +65,67 @@ namespace Test
             mockRepo.VerifyAll();
         }
 
-        //[TestMethod]
-        //public void ValidDeleteUser()
-        //{
-        //var user = new Domain.User(
-        //                    "Luis",
-        //                    "Sanguinetti",
-        //                    "test@test.com",
-        //                    UserRole.Administrator,
-        //                    1,
-        //                    "password"
-        //                    );
-
-        //    Mock<IGenericRepository<Domain.User>> mockRepo = new Mock<IGenericRepository<Domain.User>>();
-        //    mockRepo.Setup(repo => repo.Insert(It.IsAny<Domain.User>())).Returns(user);
-        //   // mockRepo.Setup(repo => repo.Get(It.IsAny<Domain.User>())).Returns(user);
-        //    mockRepo.Setup(repo => repo.Delete(user));
-
-        //    IUserLogic logic = new UserLogic(mockRepo.Object);
-
-
-
-        //    // Act
-        //    logic.DeleteUser(user.Id);
-
-        //    // Assert
-        //    mockRepo.VerifyAll();
-        //}
-
         [TestMethod]
-        public void DeleteUserOk()
+        public void ValidDeleteUser()
         {
-            var user = new Domain.User(
-                    "Luis",
-                    "Sanguinetti",
-                    "test@test.com",
-                    UserRole.Administrator,
-                    1,
-                    "password"
-                    );
+            var user = new Domain.User("John", "Doe", "john@example.com", UserRole.Administrator, 1, "password");
+            _mockUserRepo.Setup(repo => repo.Get(It.IsAny<System.Linq.Expressions.Expression<System.Func<Domain.User, bool>>>(), null)).Returns(user);
 
-            Mock<IGenericRepository<Domain.User>> mockRepo = new Mock<IGenericRepository<Domain.User>>();
-            mockRepo.Setup(repo => repo.Insert(It.IsAny<Domain.User>())).Returns(user);
-            mockRepo.Setup(repo => repo.Get(p => p.Id == user.Id, null)).Returns(user);
-            mockRepo.Setup(repo => repo.Delete(user));
+            _userLogic.DeleteUser(1);
 
-            IUserLogic logic = new UserLogic(mockRepo.Object);
-
-            var expected = new CreateUserRequest(
-                "Luis",
-                "Sanguinetti",
-                "test@test.com",
-                UserRole.Administrator,
-                "password"
-
-                );
-
-
-            // Act
-            UserResponse result = logic.CreateUser(expected);
-            logic.DeleteUser(user.Id);
-
-            // Assert
-            mockRepo.VerifyAll();
+            _mockUserRepo.Verify(repo => repo.Delete(user), Times.Once);
         }
 
+        [TestMethod]
+        public void ValidGetAllUsers()
+        {
+            var users = new List<Domain.User>
+        {
+            new Domain.User("John", "Doe", "john@example.com", UserRole.Administrator, 1, "password"),
+            new Domain.User("Jane", "Doe", "jane@example.com", UserRole.Owner, 2, "password")
+        };
+            _mockUserRepo.Setup(repo => repo.GetAll<Domain.User>()).Returns(users);
 
+            var result = _userLogic.GetAllUsers();
 
-
-
+            Assert.AreEqual(2, result.Count());
+            Assert.IsTrue(result.Any(u => u.Name == "John"));
+        }
 
         [TestMethod]
-        public void UpdateUserOk()
+        public void ValidUpdateUser()
         {
-            // Arrange
-            var user = new Domain.User("Luis",
-                                "Sanguinetti",
-                                "test@test.com",
-                                UserRole.Administrator,
-                                1,
-                                "password"
-                                );
-            Mock<IGenericRepository<Domain.User>> mockRepo = new Mock<IGenericRepository<Domain.User>>();
-            mockRepo.Setup(repo => repo.Insert(It.IsAny<Domain.User>())).Returns(user);
-            IUserLogic logic = new UserLogic(mockRepo.Object);
+            var existingUser = new Domain.User("John", "Doe", "john@example.com", UserRole.Administrator, 1, "password");
+            var updateUserRequest = new UserRequest("Johnny", "Doe", "johnny@example.com", UserRole.Administrator, "newpassword");
+            _mockUserRepo.Setup(repo => repo.Get(It.IsAny<System.Linq.Expressions.Expression<System.Func<Domain.User, bool>>>(), null)).Returns(existingUser);
+            _mockUserRepo.Setup(repo => repo.Update(It.IsAny<Domain.User>())).Returns((Domain.User u) => u);  // Return the modified user
 
-            var updated = new UserRequest(
-                "Luis",
-                "Sanguinetti",
-                "test@new.com",
-                UserRole.Administrator,
-                "password"
+            var result = _userLogic.UpdateUser(1, updateUserRequest);
 
-                );
-
-            // Act
-            UserResponse result = logic.UpdateUser(user.Id, updated);
-            // Assert
+            Assert.AreEqual("Johnny", result.Name);
+            Assert.AreEqual("johnny@example.com", result.Email);
             
-            Assert.AreEqual(updated.Email, result.Email);
-            mockRepo.VerifyAll();
         }
+
+        [TestMethod]
+        public void ValidGetUserById()
+        {
+            var user = new Domain.User("John", "Doe", "john@example.com", UserRole.Administrator, 1, "password");
+            _mockUserRepo.Setup(repo => repo.Get(It.IsAny<System.Linq.Expressions.Expression<System.Func<Domain.User, bool>>>(), null))
+                         .Returns(user);
+
+            var result = _userLogic.GetUserById(1);
+
+            Assert.IsNotNull(result);
+            Assert.AreEqual("John", result.Name);
+            Assert.AreEqual(1, result.Id);
+        }
+
+
+
+
+
+
+
     }
 }
