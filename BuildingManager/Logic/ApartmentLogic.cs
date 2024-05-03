@@ -12,10 +12,13 @@ namespace Logic
     {
         private readonly IGenericRepository<User> _userRepository;
         private readonly IGenericRepository<Apartment> _repository;
-        public ApartmentLogic(IGenericRepository<Apartment> repository, IGenericRepository<User> userRepository)
+
+        private readonly IGenericRepository<Building> _buildingRepository;
+        public ApartmentLogic(IGenericRepository<Apartment> repository, IGenericRepository<User> userRepository, IGenericRepository<Building>  buildingRepository)
         {
             _userRepository = userRepository;
             _repository = repository;
+            _buildingRepository = buildingRepository;
         }
         
 
@@ -24,13 +27,19 @@ namespace Logic
         public ApartmentResponse CreateApartment(ApartmentRequest apartmentRequest)
         {
             User owner = _userRepository.Get(x=>x.Id==apartmentRequest.OwnerId);
+            Building building = _buildingRepository.Get(x=>x.Id== apartmentRequest.BuildingId);
+
+            if (building == null)
+            {
+                throw new KeyNotFoundException($"No Building found with ID {apartmentRequest.BuildingId}");
+            }
 
             if (owner == null)
             {
-                throw new KeyNotFoundException($"No user found with ID {apartmentRequest.OwnerId}");
+                throw new KeyNotFoundException($"No User found with ID {apartmentRequest.OwnerId}");
             }
 
-            Apartment apartment = new Apartment(apartmentRequest.Floor,apartmentRequest.Number,owner,apartmentRequest.NumberOfBedrooms,apartmentRequest.NumberOfBathrooms,apartmentRequest.HasTerrace,apartmentRequest.Id);
+            Apartment apartment = new Apartment(apartmentRequest.Floor,apartmentRequest.Number,owner,apartmentRequest.NumberOfBedrooms,apartmentRequest.NumberOfBathrooms,apartmentRequest.HasTerrace,apartmentRequest.Id,building);
             var dataApt = _repository.Insert(apartment);
             return new ApartmentResponse(dataApt);
         }

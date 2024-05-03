@@ -27,8 +27,7 @@ namespace Domain
             Name = name;
             Direction = direction;
             BuildingCompany = buildingCompany;
-            Apartments = new List<Apartment>();
-            MaintenancePersons = new List<User>();
+
         }
     }
 }

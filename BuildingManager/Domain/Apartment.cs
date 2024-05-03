@@ -18,10 +18,12 @@ namespace Domain
         public int NumberOfBathrooms { get; set; }
         public bool HasTerrace { get; set; }
 
+        public Building Building { get; set; }
+
         public Apartment() { 
         }
 
-        public Apartment(int floor, int number, User owner, int numberOfBedrooms, int numberOfBathrooms, bool hasTerrace, int id)
+        public Apartment(int floor, int number, User owner, int numberOfBedrooms, int numberOfBathrooms, bool hasTerrace, int id, Building building)
         {
             Id = id;
             Floor = floor;
@@ -30,6 +32,8 @@ namespace Domain
             NumberOfBedrooms = numberOfBedrooms;
             NumberOfBathrooms = numberOfBathrooms;
             HasTerrace = hasTerrace;
+            Building = building;
+             
         }
     }
 }
