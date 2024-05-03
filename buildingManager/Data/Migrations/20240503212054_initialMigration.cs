@@ -108,7 +108,7 @@ namespace Data.Migrations
                     NumberOfBedrooms = table.Column<int>(type: "int", nullable: false),
                     NumberOfBathrooms = table.Column<int>(type: "int", nullable: false),
                     HasTerrace = table.Column<bool>(type: "bit", nullable: false),
-                    BuildingId = table.Column<int>(type: "int", nullable: true)
+                    BuildingId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -117,7 +117,8 @@ namespace Data.Migrations
                         name: "FK_Apartments_Buildings_BuildingId",
                         column: x => x.BuildingId,
                         principalTable: "Buildings",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Apartments_Users_OwnerId",
                         column: x => x.OwnerId,
@@ -137,7 +138,8 @@ namespace Data.Migrations
                     CategoryServiceId = table.Column<int>(type: "int", nullable: false),
                     State = table.Column<int>(type: "int", nullable: false),
                     DateStart = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    DateEnd = table.Column<DateTime>(type: "datetime2", nullable: false)
+                    DateEnd = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    MaintenancePersonId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -154,6 +156,12 @@ namespace Data.Migrations
                         principalTable: "CategoryService",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_MaintenanceRequests_Users_MaintenancePersonId",
+                        column: x => x.MaintenancePersonId,
+                        principalTable: "Users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateIndex(
@@ -180,6 +188,11 @@ namespace Data.Migrations
                 name: "IX_MaintenanceRequests_CategoryServiceId",
                 table: "MaintenanceRequests",
                 column: "CategoryServiceId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_MaintenanceRequests_MaintenancePersonId",
+                table: "MaintenanceRequests",
+                column: "MaintenancePersonId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Users_BuildingId",

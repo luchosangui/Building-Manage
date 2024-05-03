@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Data.Migrations
 {
     [DbContext(typeof(BuildingManagerContext))]
-    [Migration("20240503155455_apartmentBuildingMigration")]
-    partial class apartmentBuildingMigration
+    [Migration("20240503212054_initialMigration")]
+    partial class initialMigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -171,6 +171,9 @@ namespace Data.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("MaintenancePersonId")
+                        .HasColumnType("int");
+
                     b.Property<int>("State")
                         .HasColumnType("int");
 
@@ -179,6 +182,8 @@ namespace Data.Migrations
                     b.HasIndex("ApartmentId");
 
                     b.HasIndex("CategoryServiceId");
+
+                    b.HasIndex("MaintenancePersonId");
 
                     b.ToTable("MaintenanceRequests");
                 });
@@ -264,9 +269,17 @@ namespace Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("Domain.User", "MaintenancePerson")
+                        .WithMany()
+                        .HasForeignKey("MaintenancePersonId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("Apartment");
 
                     b.Navigation("CategoryService");
+
+                    b.Navigation("MaintenancePerson");
                 });
 
             modelBuilder.Entity("Domain.User", b =>

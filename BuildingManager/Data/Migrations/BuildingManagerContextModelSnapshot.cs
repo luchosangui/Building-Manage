@@ -168,6 +168,9 @@ namespace Data.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("MaintenancePersonId")
+                        .HasColumnType("int");
+
                     b.Property<int>("State")
                         .HasColumnType("int");
 
@@ -176,6 +179,8 @@ namespace Data.Migrations
                     b.HasIndex("ApartmentId");
 
                     b.HasIndex("CategoryServiceId");
+
+                    b.HasIndex("MaintenancePersonId");
 
                     b.ToTable("MaintenanceRequests");
                 });
@@ -261,9 +266,17 @@ namespace Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("Domain.User", "MaintenancePerson")
+                        .WithMany()
+                        .HasForeignKey("MaintenancePersonId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("Apartment");
 
                     b.Navigation("CategoryService");
+
+                    b.Navigation("MaintenancePerson");
                 });
 
             modelBuilder.Entity("Domain.User", b =>

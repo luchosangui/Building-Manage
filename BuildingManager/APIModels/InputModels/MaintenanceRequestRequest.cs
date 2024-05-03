@@ -10,51 +10,40 @@ namespace APIModels.InputModels
     public class MaintenanceRequestRequest
     {
         public int Id { get; set; }
-        public Apartment Apartment { get; set; }
+        public int ApartmentId { get; set; }
         public string Description { get; set; }
-        public CategoryService CategoryService { get; set; }
+        public int CategoryServiceId { get; set; }
 
         public StateMaintenance StateMaintenance { get; set; }
 
-        //public DateTime DateStart { get; set; }
-        //public DateTime DateEnd { get; set; }
+        public int MaintenancePersonId { get; set; }
 
-       
+        
 
-
-        public MaintenanceRequestRequest(Apartment apartment, string description, CategoryService categoryService, int id, StateMaintenance stateMaintenance)
+        public MaintenanceRequestRequest(int apartmentId, string description, int categoryServiceId, int id, StateMaintenance stateMaintenance, int maintenancePersonId)
         {
             Id = id;
-            Apartment = apartment;
+            ApartmentId = apartmentId;
             Description = description;
-            CategoryService = categoryService;
+            CategoryServiceId = categoryServiceId;
             StateMaintenance = stateMaintenance;
+            MaintenancePersonId = maintenancePersonId;
         }
 
         public MaintenanceRequestRequest ToMaintenanceRequestRequest() {
 
 
             return new MaintenanceRequestRequest(
-                Apartment,
+                ApartmentId,
                 Description,
-                CategoryService,
+                CategoryServiceId,
                 Id,
-                StateMaintenance
+                StateMaintenance,
+                MaintenancePersonId
                 );
         }
 
-        public MaintenanceRequest ToEntity() {
-
-            return new MaintenanceRequest(
-                Apartment,
-                Description,
-                CategoryService,
-                Id,
-                (StateMaintenance)1
-                );
-
-
-        }
+       
     }
 }
 

@@ -2,6 +2,7 @@
 using APIModels.InputModels;
 using ILogic;
 using Logic;
+using Exceptions.LogicExceptions;
 
 namespace BuildingManager.Controllers
 {
@@ -24,9 +25,20 @@ namespace BuildingManager.Controllers
             {
                 return BadRequest(ModelState);
             }
+            try
+            {
+                var newMaintenanceRequest = _maintenanceRequestLogic.CreateMaintenenceRequest(received.ToMaintenanceRequestRequest());
+                return CreatedAtAction(nameof(CreateMaintenanceRequest), new { id = newMaintenanceRequest.Id }, newMaintenanceRequest);
 
-            var newMaintenanceRequest = _maintenanceRequestLogic.CreateMaintenenceRequest(received.ToMaintenanceRequestRequest());
-            return CreatedAtAction(nameof(CreateMaintenanceRequest), new { id = newMaintenanceRequest.Id }, newMaintenanceRequest);
+            }
+            catch(KeyNotFoundException ex) { 
+                return BadRequest(new { error = ex.Message });
+            }   
+            catch(WrongRoleExceptionMaintenance ex) {
+                return BadRequest(new {error= ex.Message});
+
+
+            }
         }
         [HttpGet]
         public IActionResult GetAllMaintenanceRequest()
@@ -48,8 +60,24 @@ namespace BuildingManager.Controllers
         [HttpPut("{id}")]
         public IActionResult UpdateMaintenanceRequest([FromRoute]int id, [FromBody] MaintenanceRequestRequest maintenanceRequestRequest) {
 
-            var updated = _maintenanceRequestLogic.UpdateMaintenanceRequest(id, maintenanceRequestRequest);
-            return Ok(updated);
+            try
+            {
+                var updated = _maintenanceRequestLogic.UpdateMaintenanceRequest(id, maintenanceRequestRequest);
+                return Ok(updated);
+
+            }
+            catch (KeyNotFoundException ex)
+            {
+                return BadRequest(new { error = ex.Message });
+            }
+            catch (WrongRoleExceptionMaintenance ex)
+            {
+                return BadRequest(new { error = ex.Message });
+
+
+            }
+
+            
         }
 
 

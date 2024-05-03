@@ -31,17 +31,19 @@ namespace Domain
         public DateTime DateStart { get; set; }
         public DateTime DateEnd { get; set; }
 
+        public User MaintenancePerson { get; set; }  
+
          public MaintenanceRequest() { }
 
 
-        public MaintenanceRequest(Apartment apartment, string description, CategoryService categoryService, int id, StateMaintenance state)
+        public MaintenanceRequest(Apartment apartment, string description, CategoryService categoryService, int id, StateMaintenance state, User maintenancePerson)
         {
             Id = id;
             Apartment = apartment;
             Description = description;
             CategoryService = categoryService;
             State = state;
-            
+            MaintenancePerson = maintenancePerson;
         }
     }
 }

@@ -3,7 +3,9 @@ using APIModels.OutputModels;
 using Domain;
 using IData;
 using ILogic;
+using Exceptions;
 using System.Linq;
+using Exceptions.LogicExceptions;
 
 
 namespace Logic
@@ -11,16 +13,54 @@ namespace Logic
     public class MaintenanceRequestLogic : IMaintenanceRequestLogic
     {
         private readonly IGenericRepository<MaintenanceRequest> _repository;
+        private readonly IGenericRepository<User> _userRepository;
+        private readonly IGenericRepository<CategoryService> _categoryServiceRepository;
+        private readonly IGenericRepository<Apartment> _apartmentRepository;
 
-        public MaintenanceRequestLogic(IGenericRepository<MaintenanceRequest> repository)
+        public MaintenanceRequestLogic(IGenericRepository<MaintenanceRequest> repository, IGenericRepository<User> userRepository, IGenericRepository<CategoryService> categoryServiceRepository, IGenericRepository<Apartment> apartmentRepository)
         {
             _repository = repository;
+            _userRepository = userRepository;
+            _categoryServiceRepository = categoryServiceRepository;
+            _apartmentRepository = apartmentRepository;
         }
 
         public MaintenenceRequestResponse CreateMaintenenceRequest(MaintenanceRequestRequest maintenanceRequestRequest)
         {
+            //terminar para category service y apartment
+            User maintenancePerson = _userRepository.Get(x=>x.Id==maintenanceRequestRequest.MaintenancePersonId);
+            CategoryService categoryService = _categoryServiceRepository.Get(x=>x.Id==maintenanceRequestRequest.CategoryServiceId);
+            Apartment apartment = _apartmentRepository.Get(x=>x.Id== maintenanceRequestRequest.ApartmentId);
 
-            var dataMaintReq = _repository.Insert(maintenanceRequestRequest.ToEntity());
+            if (maintenancePerson == null)
+            {
+
+                throw new KeyNotFoundException($"No User found with ID {maintenanceRequestRequest.MaintenancePersonId}");
+            }
+
+            if (maintenancePerson.Role != (UserRole)2)
+            {
+
+                throw new WrongRoleExceptionMaintenance($"The user needs to be a maintenance person");
+            }
+
+            if (categoryService == null)
+            {
+
+                throw new KeyNotFoundException($"No category Service  found with ID {maintenanceRequestRequest.CategoryServiceId}");
+            }
+
+            if (apartment == null)
+            {
+
+                throw new KeyNotFoundException($"No apartment found with ID {maintenanceRequestRequest.ApartmentId}");
+            }
+
+
+              
+
+            MaintenanceRequest maintenance = new MaintenanceRequest(apartment, maintenanceRequestRequest.Description,categoryService,maintenanceRequestRequest.Id,maintenanceRequestRequest.StateMaintenance,maintenancePerson);
+            var dataMaintReq = _repository.Insert(maintenance);
             return new MaintenenceRequestResponse(dataMaintReq);
         }
 
@@ -56,25 +96,44 @@ namespace Logic
 
         public MaintenenceRequestResponse UpdateMaintenanceRequest(int id, MaintenanceRequestRequest updatedMaintenanceRequest)
         {
-            // && !"".Equals(updatedMaintenanceRequest.Name.Trim())
 
+            User maintenancePerson = _userRepository.Get(x => x.Id == updatedMaintenanceRequest.MaintenancePersonId);
+            CategoryService categoryService = _categoryServiceRepository.Get(x => x.Id == updatedMaintenanceRequest.CategoryServiceId);
+            Apartment apartment = _apartmentRepository.Get(x => x.Id == updatedMaintenanceRequest.ApartmentId);
             MaintenanceRequest maintenanceRequest = _repository.Get(x => x.Id == id);
 
 
 
-            if (updatedMaintenanceRequest.Apartment != null)
+
+            if (apartment != null)
             {
-                maintenanceRequest.Apartment = updatedMaintenanceRequest.Apartment;
+                maintenanceRequest.Apartment = _apartmentRepository.Get(x => x.Id == updatedMaintenanceRequest.ApartmentId);
             }
+            
 
             if (updatedMaintenanceRequest.Description != null && !"".Equals(updatedMaintenanceRequest.Description.Trim()))
             {
                 maintenanceRequest.Description = updatedMaintenanceRequest.Description;
             }
 
-            if (updatedMaintenanceRequest.CategoryService != null)
+             if (maintenancePerson != null)
+             {
+                if (maintenancePerson.Role != (UserRole)2)
+                {
+
+                    throw new WrongRoleExceptionMaintenance($"The user needs to be a maintenance person");
+                }
+
+                maintenanceRequest.MaintenancePerson = _userRepository.Get(x => x.Id == updatedMaintenanceRequest.MaintenancePersonId);
+             }
+
+           
+            
+
+
+            if (categoryService != null)
             {
-                maintenanceRequest.CategoryService = updatedMaintenanceRequest.CategoryService;
+                maintenanceRequest.CategoryService = _categoryServiceRepository.Get(x=> x.Id== updatedMaintenanceRequest.CategoryServiceId);
             }
 
             if (updatedMaintenanceRequest.StateMaintenance == (StateMaintenance)1)

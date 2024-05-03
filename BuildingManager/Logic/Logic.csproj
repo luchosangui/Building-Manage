@@ -13,6 +13,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Domain\Domain.csproj" />
+    <ProjectReference Include="..\Exceptions\Exceptions.csproj" />
     <ProjectReference Include="..\IData\IData.csproj" />
     <ProjectReference Include="..\ILogic\ILogic.csproj" />
   </ItemGroup>
