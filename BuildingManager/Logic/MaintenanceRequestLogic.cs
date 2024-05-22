@@ -85,6 +85,54 @@ namespace Logic
         }
 
 
+        public IEnumerable<GroupedRequestResponse> GetMaintenanceReportBuildings()
+        {
+            //agarra la maintenance request con los apartment building
+            var maintenanceRequests = _repository.GetAll<MaintenanceRequest>(
+                x => true,
+                new List<string> { "Apartment.Building" }
+            );
+
+
+            var groupedResults = maintenanceRequests
+                .GroupBy(mr => new { mr.Apartment.Building.Id, mr.Apartment.Building.Name })
+                .Select(g => new GroupedRequestResponse
+                {
+                    Name = g.Key.Name,
+                    OpenedRequests = g.Count(mr => mr.State == StateMaintenance.abierto),
+                    AttendingRequests = g.Count(mr => mr.State == StateMaintenance.atendido),
+                    ClosedRequests = g.Count(mr => mr.State == StateMaintenance.cerrado)
+                }).ToList();
+
+
+            return groupedResults;
+        }
+
+        public IEnumerable<GroupedRequestResponse> GetMaintenanceReportByPersonID(int id) {
+
+            var maintenanceRequests = _repository.GetAll<MaintenanceRequest>(
+                   mr => mr.Apartment.Building.Id == id,
+                   new List<string> { "Apartment.Building", "MaintenancePerson" }
+               );
+
+            if (maintenanceRequests == null)
+            {
+                throw new KeyNotFoundException($"No Maintenance person found with ID {id}");
+            }
+
+            var groupedResults = maintenanceRequests
+                .GroupBy(mr => new { mr.MaintenancePerson.Id, mr.MaintenancePerson.Name })
+                .Select(g => new GroupedRequestResponse
+                {
+                    Name = g.Key.Name,
+                    OpenedRequests = g.Count(mr => mr.State == StateMaintenance.abierto),
+                    AttendingRequests = g.Count(mr => mr.State == StateMaintenance.atendido),
+                    ClosedRequests = g.Count(mr => mr.State == StateMaintenance.cerrado)
+                }).ToList();
+
+            return groupedResults;
+
+        }
 
         //revisar
         public IEnumerable<MaintenenceRequestResponse> GetAllUMaintenanceRequest()

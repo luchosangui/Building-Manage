@@ -15,5 +15,8 @@ namespace ILogic
         public void DeleteMaintenenceRequest(int id);
         public IEnumerable<MaintenenceRequestResponse> GetAllUMaintenanceRequest();
         public MaintenenceRequestResponse UpdateMaintenanceRequest(int id, MaintenanceRequestRequest updatedMaintenanceRequest);
+
+        public IEnumerable<GroupedRequestResponse> GetMaintenanceReportBuildings();
+        public IEnumerable<GroupedRequestResponse> GetMaintenanceReportByPersonID(int id);
     }
 }
