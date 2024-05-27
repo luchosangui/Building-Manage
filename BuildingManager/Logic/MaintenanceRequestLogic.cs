@@ -6,6 +6,7 @@ using ILogic;
 using Exceptions;
 using System.Linq;
 using Exceptions.LogicExceptions;
+using Microsoft.EntityFrameworkCore;
 
 
 namespace Logic
@@ -66,7 +67,10 @@ namespace Logic
 
         public MaintenenceRequestResponse GetMaintenanceRequestById(int id)
         {
-            MaintenanceRequest maintenenceRequest = _repository.Get(x => x.Id == id);
+            var includes = new List<string> { "CategoryService", "Apartment" };
+           
+
+            MaintenanceRequest maintenenceRequest = _repository.Get(x => x.Id == id, includes);
             return new MaintenenceRequestResponse(maintenenceRequest);
         }
 
@@ -137,7 +141,9 @@ namespace Logic
         //revisar
         public IEnumerable<MaintenenceRequestResponse> GetAllUMaintenanceRequest()
         {
-            var maintenanceRequest = _repository.GetAll<MaintenanceRequest>();
+            var includes = new List<string> { "CategoryService", "Apartment" };
+            var maintenanceRequest = _repository.GetAll<MaintenanceRequest>(x => true, includes);
+
             var listMaintenanceRequest = maintenanceRequest.Select(maintenanceRequest => new MaintenenceRequestResponse(maintenanceRequest));
             return listMaintenanceRequest;
         }
